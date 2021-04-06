@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5821119395562672407}
   - component: {fileID: 3473543600511797834}
   - component: {fileID: 5918185942603678584}
+  - component: {fileID: -7776297168470758711}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -104,10 +105,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3f50400b9918f4a9670a8ecff7b55d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitName: Baddie
+  UnitName: Domenic
   maxHP: 100
   currentHP: 100
   maxAtkMod: 10
   currentAtkMod: 1
   maxDefMod: 10
   currentDefMod: 1
+--- !u!114 &-7776297168470758711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465476596785944828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae82dbf4c33447a4683c6efbdcda2e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

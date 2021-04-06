@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST}
 
@@ -18,7 +19,7 @@ public class battleSystem : MonoBehaviour
     public Transform playerSpawnPt;
 
     unit playerUnit;
-    unit enemyUnit;
+    public unit enemyUnit;
 
     public GameObject enemyprefab;
     public GameObject playerprefab;
@@ -47,10 +48,17 @@ public class battleSystem : MonoBehaviour
 
     public Image playerHUDFlash;
     public Image enemyHUDFlash;
+
+    string sceneName;
+    public EnemyAI AIscript;
     //SETTING UP AND START STATE------------------------------------------------------------
     void Start()
     {
         state = BattleState.START;
+        
+        Scene currentScene = SceneManager.GetActiveScene();
+        sceneName = currentScene.name;
+
         StartCoroutine(setupBattle());
     }
 
@@ -63,6 +71,13 @@ public class battleSystem : MonoBehaviour
         enemyUnit = enemyGO.GetComponent<unit>();
 
         enemyNameText.text = enemyUnit.UnitName;
+
+        AIscript = enemyGO.GetComponent<EnemyAI>();
+
+        //change enemy name
+        if (sceneName == "1_level") { enemyUnit.UnitName = "Domenic"; }
+        if (sceneName == "2_level") { enemyUnit.UnitName = "Jake"; }
+        if (sceneName == "3_level") { enemyUnit.UnitName = "Vivian the Destroyer"; }
 
         playerHUD.setHUD(playerUnit);
         enemyHUD.setHUD(enemyUnit);
@@ -92,39 +107,10 @@ public class battleSystem : MonoBehaviour
     {
         DialogText.text = "Enemy's turn";
         yield return new WaitForSeconds(1f);
-        //do things?
-        if (cardsystem.isTrueEnemyCardHolder1 == false || cardsystem.isTrueEnemyCardHolder2==false||cardsystem.isTrueEnemyCardHolder3==false || cardsystem.isTrueEnemyCardHolder4 == false || cardsystem.isTrueEnemyCardHolder5 == false) { cardsystem.OnDrawCard(); }
-        else
-        {
-            int x = Random.Range(1, 6);
+        //do things
 
-            //going to do random number gen and choose of the three cards
-            if (x==1)
-            {
-                cardsystem.EnemyCardBack1.SetActive(false);
-                cardsystem.EnemyCardHolder1.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
-            }
-            else if (x==2)
-            {
-                cardsystem.EnemyCardBack2.SetActive(false);
-                cardsystem.EnemyCardHolder2.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
-            }
-            else if(x==3)
-            {
-                cardsystem.EnemyCardBack3.SetActive(false);
-                cardsystem.EnemyCardHolder3.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
-            }
-            else if (x == 4)
-            {
-                cardsystem.EnemyCardBack4.SetActive(false);
-                cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
-            }
-            else if (x == 5)
-            {
-                cardsystem.EnemyCardBack5.SetActive(false);
-                cardsystem.EnemyCardHolder5.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
-            }
-        }
+        //call function in enemyAI
+        AIscript.EnemyLevelCheck();
     }
 
 //PLAYERTURN STATE--------------------------------------------------------------
@@ -364,7 +350,7 @@ public class battleSystem : MonoBehaviour
     //WON STATE---------------------------------------------------------------------------
     IEnumerator WonFunction()
     {
-        DialogText.text = "You Won! resetting in 5 seconds";
+        DialogText.text = "You Won! loading next level in 5 seconds";
         yield return new WaitForSeconds(5f);
         //reset scene
         Application.LoadLevel(Application.loadedLevel);
