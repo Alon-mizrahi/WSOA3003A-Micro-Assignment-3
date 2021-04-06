@@ -164,7 +164,7 @@ public class battleSystem : MonoBehaviour
     {
         //do attack change Enemy stats 
         //convention card Enemyvals affect enemy
-        enemyUnit.currentHP = enemyUnit.currentHP + EnemyHPVal*playerUnit.currentAtkMod/enemyUnit.currentDefMod;// * BalanceAtkPHVal;
+        enemyUnit.currentHP = Mathf.Round(enemyUnit.currentHP + EnemyHPVal*playerUnit.currentAtkMod/enemyUnit.currentDefMod);// * BalanceAtkPHVal;
 
         enemyUnit.currentAtkMod = enemyUnit.currentAtkMod + EnemyAtkModVal;// * BalanceAtkJoyVal;
         enemyUnit.currentDefMod = enemyUnit.currentDefMod + EnemyDefModVal;// * BalanceAtkMeaningVal;
@@ -179,7 +179,7 @@ public class battleSystem : MonoBehaviour
         enemyHUD.HPSlider.value = enemyUnit.currentHP;
 
         //do attack changing  Player stats    
-        playerUnit.currentHP = playerUnit.currentHP + PlayerHPVal*playerUnit.currentDefMod;// * BalanceAtkPHVal;
+        playerUnit.currentHP = Mathf.Round(playerUnit.currentHP + PlayerHPVal*playerUnit.currentDefMod);// * BalanceAtkPHVal;
 
         playerUnit.currentAtkMod = playerUnit.currentAtkMod + PlayerAtkModVal;// * BalanceAtkJoyVal;
         playerUnit.currentDefMod = playerUnit.currentDefMod + PlayerDefModVal;// * BalanceAtkMeaningVal;
@@ -223,7 +223,7 @@ public class battleSystem : MonoBehaviour
     IEnumerator EnemyAttack(float PlayerHPVal, float PlayerDefModVal, float PlayerAtkModVal, float EnemyHPVal, float EnemyDefModVal, float EnemyAtkModVal)
     {
         //do attack changing Enemy player stats 
-        enemyUnit.currentHP = enemyUnit.currentHP + PlayerHPVal*enemyUnit.currentDefMod;// * BalanceAtkPHVal;
+        enemyUnit.currentHP = Mathf.Round(enemyUnit.currentHP + PlayerHPVal*enemyUnit.currentDefMod);// * BalanceAtkPHVal;
 
         enemyUnit.currentAtkMod = enemyUnit.currentAtkMod + PlayerAtkModVal;// * BalanceAtkJoyVal;
         enemyUnit.currentDefMod = enemyUnit.currentDefMod + PlayerDefModVal;// * BalanceAtkMeaningVal;
@@ -240,7 +240,7 @@ public class battleSystem : MonoBehaviour
         //do attack changing  Player stats   
         //use attack mod to increase stats
         //use player defense mode to decrease
-        playerUnit.currentHP = playerUnit.currentHP + EnemyHPVal* enemyUnit.currentAtkMod / playerUnit.currentDefMod;// * BalanceAtkPHVal;
+        playerUnit.currentHP = Mathf.Round(playerUnit.currentHP + EnemyHPVal* enemyUnit.currentAtkMod / playerUnit.currentDefMod);// * BalanceAtkPHVal;
 
         playerUnit.currentAtkMod = playerUnit.currentAtkMod + EnemyAtkModVal;// * BalanceAtkJoyVal;
         playerUnit.currentDefMod = playerUnit.currentDefMod + EnemyDefModVal;// * BalanceAtkMeaningVal;
@@ -350,17 +350,18 @@ public class battleSystem : MonoBehaviour
     //WON STATE---------------------------------------------------------------------------
     IEnumerator WonFunction()
     {
-        DialogText.text = "You Won! loading next level in 5 seconds";
+        DialogText.text = "You Won! You have defeaten " + enemyUnit.UnitName + " You can advance.";
         yield return new WaitForSeconds(5f);
-        //reset scene
-        Application.LoadLevel(Application.loadedLevel);
+        //go to next scene
+        if (sceneName == "1_level") { SceneManager.LoadScene("2_level"); }
+        else if (sceneName == "2_level") { SceneManager.LoadScene("3_level"); }
+        else if (sceneName == "3_level") { SceneManager.LoadScene("1_level"); }
     }
-
 
 //LOST STATE------------------------------------------------------------------------
     IEnumerator LostFunction()
     {
-        DialogText.text = "You Lost! resetting in 5 seconds";
+        DialogText.text = "You Lost! You have to defeat "+enemyUnit.UnitName+" to advance.";
         yield return new WaitForSeconds(5f);
         //reset scene
         Application.LoadLevel(Application.loadedLevel);

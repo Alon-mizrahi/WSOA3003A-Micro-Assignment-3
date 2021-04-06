@@ -10,6 +10,8 @@ public class EnemyAI : MonoBehaviour
     public unit enemyUnit;
     public battleSystem battleScript;
 
+    string CardType;
+
     private void Start()
     {
         cardsystem = GameObject.FindWithTag("CardSystem").GetComponent<CardSystem>();
@@ -24,7 +26,7 @@ public class EnemyAI : MonoBehaviour
 //function called from battlestate
     public void EnemyLevelCheck()
     {
-        //AI LEVEL 1 DUMB - PICK UP UNTIL FULL HAND THEN PLAY RANDOM CARD
+//AI LEVEL 1 DUMB - PICK UP UNTIL FULL HAND THEN PLAY RANDOM CARD-------------------------------------------------------------------------------
         if (sceneName == "1_level")
         {
             if (cardsystem.isTrueEnemyCardHolder1 == false || cardsystem.isTrueEnemyCardHolder2 == false || cardsystem.isTrueEnemyCardHolder3 == false || cardsystem.isTrueEnemyCardHolder4 == false || cardsystem.isTrueEnemyCardHolder5 == false) { cardsystem.OnDrawCard(); }
@@ -61,34 +63,110 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        //AI LEVEL 2 DEFENSIVE - PICK UP UNTIL FULL THEN PLAY HEALING CARDS UNLESS HEALTH == MAX HEALTH
+//AI LEVEL 2 DEFENSIVE - PICK UP UNTIL FULL THEN PLAY HEALING CARDS UNLESS HEALTH == MAX HEALTH---------------------------------------------------------
         if (sceneName == "2_level")
         {
             if (cardsystem.isTrueEnemyCardHolder1 == false || cardsystem.isTrueEnemyCardHolder2 == false || cardsystem.isTrueEnemyCardHolder3 == false || cardsystem.isTrueEnemyCardHolder4 == false || cardsystem.isTrueEnemyCardHolder5 == false) { cardsystem.OnDrawCard(); }
             else
             {
-                //how to choose cards
+                //hand is full. now sort through and choose from priorety list
 
-                //cardsystem.EnemyCardBack1.SetActive(false);
-                //cardsystem.EnemyCardHolder1.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
-                if (battleScript.enemyUnit.currentHP != battleScript.enemyUnit.maxHP)
-                {
-                    //pick healing card 
+                //enemy HP != max-> play healer else-> play atk
+                    for(int i=0; i< 4; i++)
+                    {
+                        //set order and cardType to look for
+                        if(i==0){ CardType = "Healer"; }
+                        else if(i==1){ CardType = "Caster"; }
+                        else if(i==2){ CardType = "Soldier"; }
+                        else if(i==3){ CardType = "Brawler"; }
 
-                }
-                else {
+                        //Loop though cardplaces and look for the desired card type in order
+                        if (cardsystem.EnemyCardHolder1.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                        {
+                            cardsystem.EnemyCardBack1.SetActive(false);
+                            cardsystem.EnemyCardHolder1.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                            break;
+                        }
+                        else if (cardsystem.EnemyCardHolder2.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                        {
+                            cardsystem.EnemyCardBack2.SetActive(false);
+                            cardsystem.EnemyCardHolder2.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                            break;
+                        }
+                        else if (cardsystem.EnemyCardHolder3.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                        {
+                            cardsystem.EnemyCardBack3.SetActive(false);
+                            cardsystem.EnemyCardHolder3.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                            break;
+                        }
+                        else if (cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                        {
+                            cardsystem.EnemyCardBack4.SetActive(false);
+                            cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                            break;
+                        }
+                        else if (cardsystem.EnemyCardHolder5.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                        {
+                            cardsystem.EnemyCardBack5.SetActive(false);
+                            cardsystem.EnemyCardHolder5.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                            break;
+                        }
 
-                    //pick atk card if enemy has full health. else play healing card
-                }
-
-
+                    }
             }
         }
 
         //AI LEVEL 3 AGGRESIVE - PICK UP THREE PLAY BRAWLER FIRST THEN SODIER.
         if (sceneName == "3_level")
         {
+            if (cardsystem.isTrueEnemyCardHolder1 == false || cardsystem.isTrueEnemyCardHolder2 == false || cardsystem.isTrueEnemyCardHolder3 == false) { cardsystem.OnDrawCard(); }
+            else
+            {
+                //hand is full. now sort through and choose from priorety list
 
+                //enemy HP != max-> play healer else-> play atk
+                for (int i = 0; i < 4; i++)
+                {
+                    //set order and cardType to look for
+                    if (i == 0) { CardType = "Brawler"; } 
+                    else if (i == 1) { CardType = "Soldier"; }
+                    else if (i == 2) { CardType = "Caster"; }
+                    else if (i == 3) { CardType = "Healer"; }
+
+                    //Loop though cardplaces and look for the desired card type in order
+                    if (cardsystem.EnemyCardHolder1.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                    {
+                        cardsystem.EnemyCardBack1.SetActive(false);
+                        cardsystem.EnemyCardHolder1.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                        break;
+                    }
+                    else if (cardsystem.EnemyCardHolder2.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                    {
+                        cardsystem.EnemyCardBack2.SetActive(false);
+                        cardsystem.EnemyCardHolder2.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                        break;
+                    }
+                    else if (cardsystem.EnemyCardHolder3.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                    {
+                        cardsystem.EnemyCardBack3.SetActive(false);
+                        cardsystem.EnemyCardHolder3.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                        break;
+                    }
+                    else if (cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                    {
+                        cardsystem.EnemyCardBack4.SetActive(false);
+                        cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                        break;
+                    }
+                    else if (cardsystem.EnemyCardHolder5.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                    {
+                        cardsystem.EnemyCardBack5.SetActive(false);
+                        cardsystem.EnemyCardHolder5.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
+                        break;
+                    }
+
+                }
+            }
         }
     }
 
