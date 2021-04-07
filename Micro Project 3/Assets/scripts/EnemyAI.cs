@@ -152,7 +152,7 @@ public class EnemyAI : MonoBehaviour
                         cardsystem.EnemyCardHolder3.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
                         break;
                     }
-                    else if (cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
+                    /*else if (cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().CardName == CardType)
                     {
                         cardsystem.EnemyCardBack4.SetActive(false);
                         cardsystem.EnemyCardHolder4.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
@@ -163,7 +163,7 @@ public class EnemyAI : MonoBehaviour
                         cardsystem.EnemyCardBack5.SetActive(false);
                         cardsystem.EnemyCardHolder5.transform.GetChild(0).GetComponent<CardUnit>().EnemyCardUsed();
                         break;
-                    }
+                    }*/
 
                 }
             }
